@@ -1,7 +1,14 @@
 #!/bin/bash
 
-filename=$@
+{
 
-ffmpeg -i "$@" -codec:v mpeg4 -q:v 0 -an "${filename%.*}-converted.mov"
+readarray FILENAME <<< "$(echo -e "$NAUTILUS_SCRIPT_SELECTED_FILE_PATHS" | sed -e 's/\r//g')"
 
-notify-send "Deu certo!" "O arquivo $@ foi convertido para MOV." --app-name="Transform" --icon="/home/raulcraveiro/.local/share/icons/custom/transform-symbolic.svg"
+for file in "${FILENAME[@]}"; do
+    file=$(echo "$file" | tr -d $'\n')
+    ffmpeg -i "$file" -codec:v mpeg4 -q:v 0 -an "${file%.*}-converted.mov"
+done
+
+notify-send "Deu certo!" "Os áudios foram removidos com sucesso!" --app-name="Transform" --icon="/home/raulcraveiro/.local/share/icons/custom/transform-symbolic.svg"
+
+}

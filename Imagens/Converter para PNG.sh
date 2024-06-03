@@ -1,7 +1,14 @@
 #!/bin/bash
 
-filename=$@
+{
 
-convert $@ "${filename%.*}".png
+readarray FILENAME <<< "$(echo -e "$NAUTILUS_SCRIPT_SELECTED_FILE_PATHS" | sed -e 's/\r//g')"
 
-notify-send "Deu certo!" "O arquivo $@ foi convertido para PNG." --app-name="Transform" --icon="/home/raulcraveiro/.local/share/icons/custom/transform-symbolic.svg"
+for file in "${FILENAME[@]}"; do
+    file=$(echo "$file" | tr -d $'\n')
+    convert "$file" "${file%.*}-converted.png"
+done
+
+notify-send "Deu certo!" "Os arquivos foram convertidos para PNG." --app-name="Transform" --icon="/home/raulcraveiro/.local/share/icons/custom/transform-symbolic.svg"
+
+}
