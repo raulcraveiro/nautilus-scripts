@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd $@
+cd "$@"
 
 mkdir "01. A-Roll"
 mkdir "02. B-Roll"
